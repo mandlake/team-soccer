@@ -14,25 +14,25 @@ import java.util.Optional;
 public class PlayerServiceImpl implements PlayerService{
 
 
-    private final PlayerRepository playerRepository;
+    private final PlayerRepository repository;
 
     @Override
     public List<PlayerDto> findAll() throws SQLException {
-        return null;
+        return repository.findAll().stream().map(this::entityToDto).toList();
     }
 
     @Override
     public Optional<PlayerDto> findById(Long id) {
-        return Optional.empty();
+        return repository.findById(id).map(this::entityToDto);
     }
 
     @Override
     public long count() {
-        return 0;
+        return repository.count();
     }
 
     @Override
     public Boolean existById(Long id) {
-        return null;
+        return repository.existsById(id);
     }
 }

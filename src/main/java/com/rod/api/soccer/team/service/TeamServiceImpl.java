@@ -11,25 +11,25 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Service
 public class TeamServiceImpl implements TeamService{
-    private final TeamRepository teamRepository;
+    private final TeamRepository repository;
 
     @Override
     public List<TeamDTO> findAll() {
-        return teamRepository.findAllByOrderByTeamName().stream().map(i -> entityToDto(i)).toList();
+        return repository.findAllByOrderByTeamName().stream().map(this::entityToDto).toList();
     }
 
     @Override
     public Optional<TeamDTO> findById(Long id) {
-        return Optional.empty();
+        return repository.findById(id).map(this::entityToDto);
     }
 
     @Override
     public long count() {
-        return 0;
+        return repository.count();
     }
 
     @Override
     public Boolean existById(Long id) {
-        return null;
+        return repository.existsById(id);
     }
 }

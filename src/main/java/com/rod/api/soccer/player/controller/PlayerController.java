@@ -22,7 +22,8 @@ import java.util.List;
         @ApiResponse(responseCode = "404", description = "Customer not found")})
 @RequestMapping("/api/players")
 public class PlayerController {
+    private final PlayerServiceImpl service;
 
-    private final PlayerServiceImpl playerService;
+
 
 }

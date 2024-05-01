@@ -9,6 +9,7 @@ public interface PlayerService extends QueryService<PlayerDto> {
     default Player dtoToEntity(PlayerDto dto) {
         return Player.builder()
                 .id(dto.getId())
+                .playerId(dto.getPlayerId())
                 .playerName(dto.getPlayerName())
                 .ePlayerName(dto.getEPlayerName())
                 .nickname(dto.getNickname())
@@ -26,6 +27,7 @@ public interface PlayerService extends QueryService<PlayerDto> {
     default PlayerDto entityToDto(Player ent) {
         return PlayerDto.builder()
                 .id(ent.getId())
+                .playerId(ent.getPlayerId())
                 .playerName(ent.getPlayerName())
                 .ePlayerName(ent.getEPlayerName())
                 .nickname(ent.getNickname())

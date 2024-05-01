@@ -11,6 +11,7 @@ public interface TeamService extends QueryService<TeamDTO> {
     default Team dtoToEntity(TeamDTO dto){    //dto 를 entity로 바꾸는 것
         return Team.builder()
                 .id(dto.getId())
+                .teamId(dto.getTeamId())
                 .regionName(dto.getRegionName())
                 .teamName(dto.getTeamName())
                 .eTeamName(dto.getETeamName())
@@ -29,6 +30,7 @@ public interface TeamService extends QueryService<TeamDTO> {
     default TeamDTO entityToDto(Team ent){ //entity 를 dto로 바꾸는 것
         return TeamDTO.builder()
                 .id(ent.getId())
+                .teamId(ent.getTeamId())
                 .regionName(ent.getRegionName())
                 .teamName(ent.getTeamName())
                 .eTeamName(ent.getETeamName())

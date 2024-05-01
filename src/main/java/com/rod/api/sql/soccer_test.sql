@@ -91,9 +91,9 @@ WHERE region_name = '서울';
 
 SELECT COUNT(*) AS 데이터총합
 FROM stadium
-         JOIN team ON stadium.stadium_id = team.stadium_id
+         JOIN team ON stadium.stadium_id = team.sta_id
          JOIN player ON team.team_id = player.team_id
-         JOIN schedule ON stadium.stadium_id = schedule.stadium_id;
+         JOIN schedule ON stadium.stadium_id = schedule.sta_id;
 
 -- 문제 10
 -- 수원팀(K02) 과 대전팀(K10) 선수들 중 포지션이 골키퍼(GK) 인
@@ -114,7 +114,7 @@ ORDER BY team_name, player_name;
 
 SELECT CONCAT(region_name, '[ ]', team_name) AS '팀명', stadium_name AS '홈구장'
 FROM stadium
-         JOIN team ON team.stadium_id = stadium.stadium_id;
+         JOIN team ON team.sta_id = stadium.stadium_id;
 
 -- 문제 12
 -- 수원팀(K02) 과 대전팀(K10) 선수들 중
@@ -149,12 +149,12 @@ SELECT sche_date                              AS 경기일자,
        stadium_name                           AS 경기장이름,
        (SELECT team_name
         FROM team
-        WHERE team_id = schedule.hometeam_id) AS 홈팀이름,
+        WHERE team_id = schedule.hometeam_key) AS 홈팀이름,
        (SELECT team_name
         FROM team
-        WHERE team_id = schedule.awayteam_id) AS 어웨이팀이름
+        WHERE team_id = schedule.awayteam_key) AS 어웨이팀이름
 FROM stadium
-         JOIN schedule ON stadium.stadium_id = schedule.stadium_id
+         JOIN schedule ON stadium.stadium_id = schedule.sta_id
 WHERE sche_date = '20120317';
 
 -- 문제 15
@@ -167,8 +167,8 @@ WHERE sche_date = '20120317';
 SELECT CONCAT(t.region_name, '[]', t.team_name) AS '지역 / 팀', s.stadium_name, p.player_name, p.POSITION
 FROM stadium s
          JOIN schedule sc
-              ON s.stadium_id = sc.stadium_id
-         JOIN team t ON s.stadium_id = t.stadium_id
+              ON s.stadium_id = sc.sta_id
+         JOIN team t ON s.stadium_id = t.sta_id
          JOIN player p ON t.team_id = p.team_id
 WHERE t.team_name = '스틸러스'
   AND sc.sche_date = '20120317'
@@ -182,10 +182,10 @@ WHERE t.team_name = '스틸러스'
 
 SELECT s.stadium_name,
        sc.sche_date,
-       (SELECT t.team_name FROM team t WHERE sc.awayteam_id = t.team_id) '원정팀', (SELECT t.team_name FROM team t WHERE sc.hometeam_id = t.team_id) '홈팀'
+       (SELECT t.team_name FROM team t WHERE sc.awayteam_key = t.team_id) '원정팀', (SELECT t.team_name FROM team t WHERE sc.hometeam_key = t.team_id) '홈팀'
 FROM stadium s
          JOIN team t USING (stadium_id)
-         JOIN schedule sc USING (stadium_id)
+         JOIN schedule sc USING (sta_id)
 WHERE sc.home_score - sc.away_score >= 3
 ;
 
@@ -196,7 +196,7 @@ WHERE sc.home_score - sc.away_score >= 3
 -- 힌트 : LEFT JOIN 사용해야함
 
 SELECT stadium_name,
-       (SELECT t.team_name FROM team t WHERE t.stadium_id = st.stadium_id)
+       (SELECT t.team_name FROM team t WHERE t.sta_id = st.stadium_id)
 FROM stadium st;
 
 SELECT s.stadium_name, t.team_name
@@ -270,7 +270,7 @@ AND p.height < AVG;
 
 SELECT DISTINCT st.stadium_name
 FROM stadium st
-WHERE st.stadium_id IN (SELECT sc.stadium_id
+WHERE st.stadium_id IN (SELECT sc.sta_id
                         FROM schedule sc
                         WHERE sc.sche_date LIKE '201205%');
 
