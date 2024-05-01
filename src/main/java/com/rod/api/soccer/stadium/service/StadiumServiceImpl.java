@@ -15,7 +15,7 @@ public class StadiumServiceImpl implements StadiumService {
     private final StadiumRepository repository;
 
     @Override
-    public List<StadiumDTO> findAll() throws SQLException {
+    public List<StadiumDTO> findAll() {
         return repository.findAll().stream().map(this::entityToDto).toList();
     }
 

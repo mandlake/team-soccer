@@ -12,12 +12,10 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class PlayerServiceImpl implements PlayerService{
-
-
     private final PlayerRepository repository;
 
     @Override
-    public List<PlayerDto> findAll() throws SQLException {
+    public List<PlayerDto> findAll() {
         return repository.findAll().stream().map(this::entityToDto).toList();
     }
 

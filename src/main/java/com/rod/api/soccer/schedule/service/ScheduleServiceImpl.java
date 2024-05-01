@@ -15,7 +15,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     private final ScheduleRepository repository;
 
     @Override
-    public List<ScheduleDTO> findAll() throws SQLException {
+    public List<ScheduleDTO> findAll() {
         return repository.findAll().stream().map(this::entityToDto).toList();
     }
 
