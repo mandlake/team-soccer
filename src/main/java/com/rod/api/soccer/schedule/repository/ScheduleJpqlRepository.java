@@ -4,9 +4,11 @@ import com.rod.api.soccer.schedule.model.Schedule;
 import com.rod.api.soccer.stadium.model.Stadium;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+@Repository
 public interface ScheduleJpqlRepository {
 //    @Query("SELECT s FROM schedule s WHERE s.scheDate = :date")
 //    List<Schedule> findGamesInfoByDate(@Param("date") String date);

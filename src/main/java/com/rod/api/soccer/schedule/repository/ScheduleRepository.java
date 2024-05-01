@@ -11,4 +11,5 @@ import java.util.List;
 
 @Repository
 public interface ScheduleRepository extends JpaRepository<Schedule, Long>, ScheduleJpqlRepository {
+//    List<Schedule> getByStadium(Stadium stadium);
 }
