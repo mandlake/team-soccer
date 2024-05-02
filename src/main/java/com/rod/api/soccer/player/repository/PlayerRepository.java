@@ -1,7 +1,6 @@
 package com.rod.api.soccer.player.repository;
 
 import com.rod.api.soccer.player.model.Player;
-import com.rod.api.soccer.team.model.Team;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -20,7 +19,7 @@ public interface PlayerRepository extends JpaRepository<Player,Long>, PlayerJpql
     List<Player> findByTeamKeyTeamIdAndPosition(String teamId, String position);
 
     // 5. 수원팀에서 성이 고씨이고 키가 170 이상인 선수 출력
-    List<Player> findByTeamKeyTeamIdAndPlayerNameStartingWithAndHeightGreaterThanEqual(String teamId, String prefix, String height);
+    List<Player> findByTeamKeyTeamIdAndPlayerNameStartingWithAndHeightGreaterThanEqual(String teamId, String playerName, String height);
 
     // 10. 수원팀(K02) 과 대전팀(K10) 선수들 중 포지션이 골키퍼(GK)인 선수를 출력하시오
     List<Player> findByTeamKeyTeamIdOrTeamKeyTeamIdAndPosition(String teamId1, String teamId2, String position);

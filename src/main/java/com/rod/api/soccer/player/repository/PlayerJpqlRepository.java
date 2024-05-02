@@ -17,7 +17,7 @@ public interface PlayerJpqlRepository {
             "WHERE t.teamId IN :teamIds " +
             "AND p.height BETWEEN :minHeight AND :maxHeight " +
             "ORDER BY p.height, t.teamName, p.playerName")
-    List<Object[]> findByTeamKeyTeamIdInAndHeightBetween(@Param("teamIds") List<String> teamIds, @Param("minHeight") Double minHeight, @Param("maxHeight") Double maxHeight);
+    List<Object[]> findByTeamKeyTeamIdInAndHeightBetween(@Param("teamIds") String teamIds, @Param("minHeight") Double minHeight, @Param("maxHeight") Double maxHeight);
 
     // 19. 포지션이 MF 인 선수들의 소속팀명 및 선수명, 백넘버 출력
     @Query("SELECT p.teamKey.teamId AS teamId, p.teamKey.teamName AS teamName, p.playerName AS playerName " +
@@ -26,6 +26,7 @@ public interface PlayerJpqlRepository {
             "ORDER BY p.teamKey.teamName ASC, p.playerName ASC")
     List<Object[]> findByPositionOrderByTeamKeyTeamNameAscPlayerNameAsc(@Param("position") String position);
 
+    // 21. 선수 자신이 속한 팀의 평균키보다 작은 선수 정보 출력
     @Query("SELECT p " +
             "FROM player p " +
             "WHERE p.teamKey = :team " +
@@ -34,5 +35,5 @@ public interface PlayerJpqlRepository {
             "                WHERE p2.teamKey = :team " +
             "                AND p2.height IS NOT NULL AND CAST(p2.height AS DOUBLE) <> 0) " +
             "AND p.height IS NOT NULL AND CAST(p.height AS DOUBLE) <> 0")
-    List<Player> findByTeamKeyAndHeightLessThan(@Param("team") Team team);
+    List<Player> findByTeamKeyAndHeightLessThan(@Param("team") String team);
 }
