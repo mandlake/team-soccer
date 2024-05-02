@@ -15,7 +15,7 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<TeamDTO> findAll() {
-        return repository.findAllByOrderByTeamName().stream().map(this::entityToDto).toList();
+        return repository.findAllByOrderByTeamNameAsc().stream().map(this::entityToDto).toList();
     }
 
     @Override

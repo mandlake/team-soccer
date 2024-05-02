@@ -1,6 +1,7 @@
 package com.rod.api.soccer.player.repository;
 
 import com.rod.api.soccer.player.model.Player;
+import com.rod.api.soccer.team.model.Team;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -9,45 +10,29 @@ import java.util.List;
 
 @Repository
 public interface PlayerJpqlRepository {
-//    @Query("SELECT DISTINCT p.position FROM player p")
-//    List<String> findAllDistinctPlayerPositions();
-//
-//    @Query("SELECT DISTINCT CASE WHEN p.position = '' THEN '신입' ELSE p.position END FROM player p")
-//    List<String> findAllDistinctPlayerPositionsOrDefault();
-//
-//    @Query("SELECT p FROM player p WHERE p.teamKey.teamId = :teamId AND p.position = 'GK'")
-//    List<Player> findAllGoalkeepersByTeamId(@Param("teamId") String teamId);
-//
-//    @Query("SELECT p FROM player p WHERE p.playerName LIKE CONCAT(:surname, '%') AND TO_NUMBER(p.height) >= 170")
-//    List<Player> findAllPlayersBySurnameAndHeight(@Param("surname") String surname);
-//
-//    @Query("SELECT p FROM player p JOIN FETCH p.teamKey t WHERE t.teamId = :teamId AND p.position = 'MF'")
-//    List<Player> findAllMidfieldersForSpecificTeams(@Param("teamId") String teamId);
-//
-//    @Query("SELECT p FROM player p JOIN FETCH p.teamKey t WHERE t.regionName = '수원' AND p.position = 'GK'")
-//    List<Player> findGoalkeeperByHometownForSuwon();
-//
-//    @Query("SELECT p FROM player p JOIN FETCH p.teamKey t WHERE t.regionName = '서울'")
-//    List<Player> findAllPlayersInfoForSeoulTeam();
-//
-//    @Query("SELECT p, ROUND(TO_NUMBER(p.weight) / ((TO_NUMBER(p.height) / 100) * (TO_NUMBER(p.height) / 100)), 1) AS BMI FROM player p JOIN FETCH p.teamKey t WHERE t.regionName = '서울'")
-//    List<Player> findAllPlayersInfoWithBMIForSeoulTeam();
-//
-//    @Query("SELECT p FROM player p JOIN FETCH p.teamKey t WHERE (t.teamId = 'K02' OR t.teamId = 'K10') AND p.position = 'GK'")
-//    List<Player> findAllGoalkeepersForSuwonAndDaejeon();
-//
-//    @Query("SELECT p FROM player p WHERE p.position = ''")
-//    List<Player> findAllPlayersWithoutPosition();
-//
-//    @Query("SELECT p FROM player p JOIN FETCH p.teamKey t WHERE t.teamName = '드래곤즈' AND p.position = 'MF'")
-//    List<Player> findMidfieldersInfo();
-//
-//    @Query("SELECT p FROM player p ORDER BY p.height DESC")
-//    List<Player> findTallestPlayersInfo();
-//
-//    @Query("SELECT p FROM player p JOIN FETCH p.teamKey t WHERE t.teamId IN ('K02', 'K10') AND TO_NUMBER(p.height) < (SELECT AVG(p2.height) FROM player p2 WHERE p2.teamKey.teamId = t.teamId)")
-//    List<Player> findShorterPlayersThanTeamAverage();
-//
-//    @Query("SELECT p FROM player p JOIN FETCH p.teamKey t WHERE (t.teamId = 'K02' OR t.teamId = 'K10') AND TO_NUMBER(p.height) >= 170")
-//    List<Player> findAllPlayersByHeightForSuwonAndDaejeon();
+    // 12. 수원팀(K02) 과 대전팀(K10) 선수들 중 키가 180 이상 183 이하인 선수들
+    @Query("SELECT p.height, t.teamName, p.playerName " +
+            "FROM team t " +
+            "JOIN player p ON t.teamId = p.teamKey.teamId " +
+            "WHERE t.teamId IN :teamIds " +
+            "AND p.height BETWEEN :minHeight AND :maxHeight " +
+            "ORDER BY p.height, t.teamName, p.playerName")
+    List<Object[]> findByTeamKeyTeamIdInAndHeightBetween(@Param("teamIds") List<String> teamIds, @Param("minHeight") Double minHeight, @Param("maxHeight") Double maxHeight);
+
+    // 19. 포지션이 MF 인 선수들의 소속팀명 및 선수명, 백넘버 출력
+    @Query("SELECT p.teamKey.teamId AS teamId, p.teamKey.teamName AS teamName, p.playerName AS playerName " +
+            "FROM player p " +
+            "WHERE p.position = :position " +
+            "ORDER BY p.teamKey.teamName ASC, p.playerName ASC")
+    List<Object[]> findByPositionOrderByTeamKeyTeamNameAscPlayerNameAsc(@Param("position") String position);
+
+    @Query("SELECT p " +
+            "FROM player p " +
+            "WHERE p.teamKey = :team " +
+            "AND CAST(p.height AS DOUBLE) < (SELECT AVG(CAST(p2.height AS DOUBLE)) " +
+            "                FROM player p2 " +
+            "                WHERE p2.teamKey = :team " +
+            "                AND p2.height IS NOT NULL AND CAST(p2.height AS DOUBLE) <> 0) " +
+            "AND p.height IS NOT NULL AND CAST(p.height AS DOUBLE) <> 0")
+    List<Player> findByTeamKeyAndHeightLessThan(@Param("team") Team team);
 }

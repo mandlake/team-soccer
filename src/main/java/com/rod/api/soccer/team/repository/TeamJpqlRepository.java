@@ -8,6 +8,11 @@ import java.util.List;
 
 @Repository
 public interface TeamJpqlRepository {
-//    @Query("SELECT t FROM team t JOIN FETCH t.players p WHERE AVG(p.height) < (SELECT AVG(p2.height) FROM player p2 WHERE p2.teamKey.teamId = t.teamId) AND t.regionName = '인천'")
-//    List<Team> findTeamsWithAverageHeightLowerThanIncheon();
+    // 8. 서울팀 선수들 이름, 키, 몸무게 목록으로 출력
+    @Query("SELECT p.playerName, COALESCE(NULLIF(p.height, ''), 0), COALESCE(NULLIF(p.weight, ''), 0)\n" +
+            "FROM player p\n" +
+            "JOIN p.teamKey t\n" +
+            "WHERE t.regionName = '서울'\n" +
+            "ORDER BY p.height DESC, p.weight DESC")
+    List<Team> findByStadiumKeyAddressOrderByPlayersHeightDescWeightDesc(String address);
 }

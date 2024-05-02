@@ -1,27 +1,18 @@
 package com.rod.api.soccer.schedule.repository;
 
-import com.rod.api.soccer.schedule.model.Schedule;
-import com.rod.api.soccer.stadium.model.Stadium;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
 public interface ScheduleJpqlRepository {
-//    @Query("SELECT s FROM schedule s WHERE s.scheDate = :date")
-//    List<Schedule> findGamesInfoByDate(@Param("date") String date);
-//
-//    @Query("SELECT s FROM schedule s WHERE s.id = :gameId")
-//    Schedule findPlayerInfoForSpecificGame(@Param("gameId") Long gameId);
-//
-//    @Query("SELECT s FROM schedule s WHERE ABS(s.homeScore - s.awayScore) >= 3")
-//    List<Schedule> findGamesWithLargeScoreDifference();
-//
-//    @Query("SELECT s.stadiumKey FROM schedule s WHERE s.stadiumKey.hometeamKey IS NULL")
-//    List<Stadium> findStadiumsWithoutHomeTeam();
-//
-//    @Query("SELECT s.stadiumKey FROM schedule s WHERE s.scheDate LIKE '201205%'")
-//    List<Stadium> findStadiumsWithGamesInMay2012();
+    // 15. 2012년 3월 17일 경기에 포항 스틸러스 소속 골키퍼(GK) 선수, 포지션,팀명 (연고지포함), 스타디움, 경기날짜를 구하시오
+    @Query("SELECT CONCAT(t.regionName, '[]', t.teamName), s.stadiumName, p.playerName, p.position " +
+            "FROM schedule sc " +
+            "JOIN sc.stadiumKey s " +
+            "JOIN s.teams t " +
+            "JOIN t.players p " +
+            "WHERE t.teamName = ?1 AND sc.scheDate = ?2 AND p.position = ?3")
+    List<Object[]> findTeamStadiumPlayerByTeamNameAndDateAndPosition(String teamName, String date, String position);
 }
