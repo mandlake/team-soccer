@@ -2,7 +2,6 @@ package com.rod.api.common.enums;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-
 @RequiredArgsConstructor
 @Getter
 public enum ErrorCode {

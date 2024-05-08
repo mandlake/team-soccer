@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="roddb@127.0.0.1" uuid="c7a6148d-2d0b-4604-a957-10bb89c588cc">
+    <data-source source="LOCAL" name="roddb@127.0.0.1" uuid="a4473373-c61e-44b9-b5e8-c9920dc451e8">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

@@ -1,8 +1,6 @@
 package com.rod.api.common.service;
 
 public class UtilServiceImpl implements UtilService {
-
-    //싱글톤 패턴
     private static UtilService instance = new UtilServiceImpl();
     private UtilServiceImpl(){}
     public static UtilService getInstance(){return instance;}
@@ -62,6 +60,13 @@ public class UtilServiceImpl implements UtilService {
     }
 
     @Override
+    public String createRandomJob() {
+        String[] names = {"경찰", "소방관", "세일즈맨", "교수", "회계사",
+                "공무원", "의사"};
+        return names[createRandomInteger(0,6)];
+    }
+
+    @Override
     public String createRandomUsername() {
         String username = "";
         for(;
@@ -69,5 +74,4 @@ public class UtilServiceImpl implements UtilService {
             username += String.valueOf((char)('a' + this.createRandomInteger(0, 26))));
         return username;
     }
-
 }

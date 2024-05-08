@@ -1,16 +1,12 @@
 package com.rod.api.common.service;
 
-import java.sql.SQLException;
+
 import java.util.List;
 import java.util.Optional;
 
-public interface QueryService<T> {
-
-    List<T> findAll();
-
+public interface QueryService <T>{
+    List<T> findAll() ;
     Optional<T> findById(Long id);
-
     long count();
-
-    Boolean existById(Long id);
+    boolean existsById(Long id);
 }

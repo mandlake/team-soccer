@@ -9,13 +9,11 @@ public class ServerConfig {
 
     @Bean
     public String datePattern() {
-
-        return "yyyy-MM-dd'T'HH:mm:ss";
+        return "yyyy-MM-dd'T'HH:mm:ss.XXX";
     }
 
     @Bean
     public DateFormatter defaultDateFormatter() {
-
         return new DateFormatter(datePattern());
     }
 }
