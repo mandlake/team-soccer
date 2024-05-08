@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Log4j2
 public class PageDTO {
     private Long pageSize;
-    private static Long BLOCK_SIZE = 10L;
+    public static Long BLOCK_SIZE = 10L;
     private Long totalCount;
     private Long blockCount;
     private Long pageCount;

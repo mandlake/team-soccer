@@ -11,12 +11,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 @Slf4j
 public class PageServiceImpl implements PageService {
-    private final PageDTO pageDTO;
 
     @Override
     public PageDTO getPageDTO(Pageable pageable, Long totalCount) {
         Long pageSize = (long) pageable.getPageSize();
-        long BLOCK_SIZE = 10L;
+        long BLOCK_SIZE = PageDTO.BLOCK_SIZE;
         long pageCount = totalCount % pageSize == 0 ? totalCount / pageSize : totalCount / pageSize + 1;
         long blockCount = pageCount % BLOCK_SIZE == 0 ? pageCount / BLOCK_SIZE : pageCount / BLOCK_SIZE + 1;
 
@@ -35,18 +34,18 @@ public class PageServiceImpl implements PageService {
         boolean existPrev = prevBlock >= 0;
         boolean existNext = nextBlock <= blockCount;
 
-        log.info("MY-INFO : Controller searchPlayer totalCount is {}", totalCount);
-        log.info("MY-INFO : Controller searchPlayer pageCount is {}", pageCount);
-        log.info("MY-INFO : Controller searchPlayer blockCount is {}", blockCount);
-        log.info("MY-INFO : Controller searchPlayer startRow is {}", startRow);
-        log.info("MY-INFO : Controller searchPlayer endRow is {}", endRow);
-        log.info("MY-INFO : Controller searchPlayer blockNum is {}", blockNum);
-        log.info("MY-INFO : Controller searchPlayer startPage is {}", startPage);
-        log.info("MY-INFO : Controller searchPlayer endPage is {}", endPage);
-        log.info("MY-INFO : Controller searchPlayer existPrev is {}", existPrev);
-        log.info("MY-INFO : Controller searchPlayer existNext is {}", existNext);
-        log.info("MY-INFO : Controller searchPlayer nextBlock is {}", nextBlock);
-        log.info("MY-INFO : Controller searchPlayer prevBlock is {}", prevBlock);
+        log.info("MY-INFO : Controller totalCount is {}", totalCount);
+        log.info("MY-INFO : Controller pageCount is {}", pageCount);
+        log.info("MY-INFO : Controller blockCount is {}", blockCount);
+        log.info("MY-INFO : Controller startRow is {}", startRow);
+        log.info("MY-INFO : Controller endRow is {}", endRow);
+        log.info("MY-INFO : Controller blockNum is {}", blockNum);
+        log.info("MY-INFO : Controller startPage is {}", startPage);
+        log.info("MY-INFO : Controller endPage is {}", endPage);
+        log.info("MY-INFO : Controller existPrev is {}", existPrev);
+        log.info("MY-INFO : Controller existNext is {}", existNext);
+        log.info("MY-INFO : Controller nextBlock is {}", nextBlock);
+        log.info("MY-INFO : Controller prevBlock is {}", prevBlock);
 
         return PageDTO.builder()
                 .pageSize(pageSize)

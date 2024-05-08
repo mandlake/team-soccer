@@ -1,11 +1,12 @@
 package com.rod.api.common.service.impl;
 
 import com.rod.api.common.service.UtilService;
+import lombok.Getter;
 
 public class UtilServiceImpl implements UtilService {
+    @Getter
     private static UtilService instance = new UtilServiceImpl();
     private UtilServiceImpl(){}
-    public static UtilService getInstance(){return instance;}
 
     @Override
     public int createRandomInteger(int start, int gapBetweenStartAndEnd) {
