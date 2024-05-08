@@ -2,6 +2,7 @@ package com.rod.api.player.web;
 
 import com.rod.api.player.repository.PlayerRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -14,10 +15,10 @@ public class PlayerRouter {
 
     public List<?> execute(String q, String playerName, String position,
                                              String teamId, String regionName, String height,
-                                             String teamName1, String teamName2, String min, String max){
+                                             String teamName1, String teamName2, String min, String max, Pageable pageable){
 
      return switch (q){
-                    case "2" -> repository.getPractice2();
+                    case "position-list" -> repository.getPractice2();
                     case "4" -> repository.getPractice4(teamId,position);
                     case "5" -> repository.searchPractice5(teamId,playerName,height);
                     case "5-1" -> repository.getPractice51(playerName,height,regionName);

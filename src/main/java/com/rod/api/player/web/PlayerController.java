@@ -1,5 +1,8 @@
 package com.rod.api.player.web;
 
+import com.rod.api.common.model.PageDTO;
+import com.rod.api.common.service.impl.PageServiceImpl;
+import com.rod.api.player.model.Box;
 import com.rod.api.player.service.PlayerServiceImpl;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
@@ -22,6 +25,7 @@ import java.util.List;
 public class PlayerController {
     private final PlayerServiceImpl service;
     private final PlayerRouter router;
+    private final PageServiceImpl pageService;
 
     @GetMapping(path = "/search")
     public ResponseEntity<?> searchPlayer(
@@ -42,43 +46,16 @@ public class PlayerController {
         log.info("MY-INFO : Controller searchPlayer limit is {}", pageable.getPageSize());
         log.info("MY-INFO : Controller searchPlayer sortField is {}", pageable.getSort());
 
-        int pageSize = pageable.getPageSize();
-        int BLOCK_SIZE = 10;
-
         Long totalCount = service.count();
-        long pageCount = (totalCount % pageSize == 0) ? totalCount / pageSize : totalCount / pageSize + 1;
-        Long blockCount = (pageCount % BLOCK_SIZE == 0) ? pageCount / BLOCK_SIZE : pageCount / BLOCK_SIZE + 1;
 
-        int pageNum = pageable.getPageNumber();
-        int blockNum = pageNum / BLOCK_SIZE + 1;
+        List<?> o = router.execute(q, playerName, position, teamId, regionName, height, teamName1, teamName2, min, max, pageable);
+        PageDTO pageDTO = pageService.getPageDTO(pageable, totalCount);
 
-        int startRow = (pageNum - 1) * pageSize;
-        int endRow = startRow + pageSize - 1;
+        Box box = new Box();
+        box.setPageDTO(pageDTO);
+        box.setList(o);
 
-        int startPage = (blockNum - 1) * BLOCK_SIZE;
-        int endPage = startPage + BLOCK_SIZE - 1;
-
-        int prevBlock = blockNum - 1;
-        int nextBlock = blockNum + 1;
-
-        boolean existPrev = prevBlock > 0;
-        boolean existNext = nextBlock > 0;
-
-        log.info("MY-INFO : Controller searchPlayer totalCount is {}", totalCount);
-        log.info("MY-INFO : Controller searchPlayer pageCount is {}", pageCount);
-        log.info("MY-INFO : Controller searchPlayer blockCount is {}", blockCount);
-        log.info("MY-INFO : Controller searchPlayer startRow is {}", startRow);
-        log.info("MY-INFO : Controller searchPlayer endRow is {}", endRow);
-        log.info("MY-INFO : Controller searchPlayer blockNum is {}", blockNum);
-        log.info("MY-INFO : Controller searchPlayer startPage is {}", startPage);
-        log.info("MY-INFO : Controller searchPlayer endPage is {}", endPage);
-        log.info("MY-INFO : Controller searchPlayer existPrev is {}", existPrev);
-        log.info("MY-INFO : Controller searchPlayer existNext is {}", existNext);
-        log.info("MY-INFO : Controller searchPlayer nextBlock is {}", nextBlock);
-        log.info("MY-INFO : Controller searchPlayer prevBlock is {}", prevBlock);
-
-        List<?> o = router.execute(q,playerName,position,teamId,regionName, height, teamName1,teamName2,min,max);
-        return ResponseEntity.ok(o);
+        return ResponseEntity.ok(box);
     }
 }
 

@@ -23,4 +23,9 @@ public class ScheduleServiceImpl  implements ScheduleService{
         return repository.getAllSchedules();
     }
 
+    @Override
+    public Long count() {
+        return repository.count();
+    }
+
 }

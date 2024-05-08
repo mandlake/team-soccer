@@ -9,4 +9,6 @@ public interface ScheduleService {
     List<String> problem23(String date1, String date2);
 
     List<?> getAllSchedules();
+
+    Long count();
 }
